@@ -26,7 +26,18 @@ class Student:
 
     def __str__(self):
         return (f'Студент \nИмя: {self.name} \nФамилия: {self.surname}'
-                  f'\nСредняя оценка за домашние задания: {self.average_grade()}')
+                  f'\nСредняя оценка за домашние задания: {self.average_grade()}'
+                f'\nКурсы в процессе изучения: {", ".join(self.courses_in_progress)}'
+                f'\nЗавершённые курсы: {", ".join(self.finished_courses)}\n')
+
+    def __gt__(self, other):
+        if not isinstance(other, Student):
+            return 'Ошибка! Это не студент!'
+        else:
+            if self.average_grade() > other.average_grade():
+                return f'Студент {self.name} {self.surname} успешнее, чем {other.name} {other.surname}\n'
+            else:
+                return f'Студент {other.name} {other.surname} успешнее, чем {self.name} {self.surname}\n'
 
 class Mentor:
     def __init__(self, name, surname):
@@ -49,6 +60,15 @@ class Lecturer(Mentor):
     def __str__(self):
         return (f'Лектор \nИмя: {self.name} \nФамилия: {self.surname}'
                 f'\nСредняя оценка за лекции: {self.average_rate()}\n')
+
+    def __gt__(self, other):
+        if not isinstance(other, Lecturer):
+            return 'Ошибка! Это не лектор!'
+        else:
+            if self.average_rate() > other.average_rate():
+                return f'Лектор {self.name} {self.surname} успешнее, чем {other.name} {other.surname}\n'
+            else:
+                return f'Лектор {other.name} {other.surname} успешнее, чем {self.name} {self.surname}\n'
 
 class Reviewer(Mentor):
     def rate_hw(self, student, course, grade):
@@ -93,4 +113,26 @@ print(reviewer_cool_mentor_2)
 print(reviewer_cool_mentor_1)
 print(lecturer_cool_mentor_3)
 print(lecturer_cool_mentor_1)
+print(best_student_1 > best_student_2)
+print(lecturer_cool_mentor_3 > best_student_2)
 
+def avg_grades_all(students_list, course):
+    all_grades_list = []
+    for student in students_list:
+        if student.grades.get(course) is not None:
+            all_grades_list += student.grades.get(course)
+    all_grades_avg = str(sum(all_grades_list) / len(all_grades_list))
+    print(f'Средняя оценка всех студентов за домашние задания по курсу {course}: {all_grades_avg}')
+
+def avg_rates_all(lecturer_list, course):
+    all_rates_list = []
+    for lecturer in lecturer_list:
+        if lecturer.rating.get(course) is not None:
+            all_rates_list += lecturer.rating.get(course)
+    all_rates_avg = str(sum(all_rates_list) / len(all_rates_list))
+    print(f'Средняя оценка всех лекторов в рамках курса {course}: {all_rates_avg}')
+
+avg_grades_all([best_student_1, best_student_2], 'Python')
+avg_grades_all([best_student_1, best_student_2], 'Git')
+avg_rates_all([lecturer_cool_mentor_3, lecturer_cool_mentor_1], 'Python')
+avg_rates_all([lecturer_cool_mentor_3, lecturer_cool_mentor_1], 'Git')
