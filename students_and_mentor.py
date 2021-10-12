@@ -17,8 +17,16 @@ class Student:
         else:
             return 'Ошибка'
 
+    def average_grade(self):
+        grades_list = []
+        for grade in self.grades.values():
+            grades_list += grade
+        average_grade = str(sum(grades_list) / len(grades_list))
+        return average_grade
+
     def __str__(self):
-        return (f'Студент \nИмя: {self.name} \nФамилия: {self.surname}')
+        return (f'Студент \nИмя: {self.name} \nФамилия: {self.surname}'
+                  f'\nСредняя оценка за домашние задания: {self.average_grade()}')
 
 class Mentor:
     def __init__(self, name, surname):
@@ -39,8 +47,8 @@ class Lecturer(Mentor):
         return average_rate
 
     def __str__(self):
-        return (f'Лектор \nИмя: {self.name} \nФамилия: {self.surname}')
-                #f'\nСредняя оценка за лекции: {self.average_rate()}\n')
+        return (f'Лектор \nИмя: {self.name} \nФамилия: {self.surname}'
+                f'\nСредняя оценка за лекции: {self.average_rate()}\n')
 
 class Reviewer(Mentor):
     def rate_hw(self, student, course, grade):
@@ -57,7 +65,6 @@ class Reviewer(Mentor):
 
 best_student_1 = Student('Иванов', 'Иван', 'boy')
 best_student_1.courses_in_progress += ['Python', 'Git']
-
 best_student_2 = Student('Иванова', 'Ольга', 'girl')
 best_student_2.courses_in_progress += ['Python']
 best_student_2.finished_courses += ['Git']
